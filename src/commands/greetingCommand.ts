@@ -1,38 +1,39 @@
 import type { ProgramCommand, CommandOption } from "../types";
 
-const greetingOption: CommandOption = {
+const messageOption: CommandOption = {
   flag: "--message <greetingMessage>",
   description: "add custom greeting message",
   defaultValue: "Hi",
 };
 
-const doFunctionOption: CommandOption = {
-  flag: "--do <doFunctionName>",
+const addSuffixOption: CommandOption = {
+  flag: "--addSuffix <addSuffixFunctionName>",
   description: 'available functions: "addQuestionMark", "addTilde"',
   defaultValue: "default",
 };
 
-const doFunctions: { [functionName: string]: (param: string) => void } = {
-  default: (greeting: string) => console.log(greeting),
-  addQuestionMark: (greeting: string) => console.log(`${greeting}?`),
-  addTilde: (greeting: string) => console.log(`${greeting}~`),
-};
+const action = (optionStrings: { [k: string]: string }) => {
+  const addSuffixes: { [functionName: string]: (param: string) => void } = {
+    default: (greeting: string) => console.log(greeting),
+    addQuestionMark: (greeting: string) => console.log(`${greeting}?`),
+    addTilde: (greeting: string) => console.log(`${greeting}~`),
+  };
 
-const commandAction = (optionStrings: { [k: string]: string }) => {
-  let doFunction = doFunctions["default"];
-  if (optionStrings["do"]) doFunction = doFunctions[optionStrings["do"]];
+  const addSuffix = optionStrings["addSuffix"]
+    ? addSuffixes[optionStrings["addSuffix"]]
+    : addSuffixes["default"];
 
   try {
-    doFunction(optionStrings.message);
+    addSuffix(optionStrings.message);
   } catch (error) {
-    console.log(`--do "${optionStrings["do"]}" is invalid`);
+    console.log(`--addSuffix "${optionStrings["addSuffix"]}" is invalid`);
     process.exit(1);
   }
 };
 
 export const greetingCommand: ProgramCommand = {
   commandName: "greeting",
-  description: 'print greeting message(for test)',
-  options: [greetingOption, doFunctionOption],
-  action: commandAction,
+  description: "print greeting message(for test)",
+  options: [messageOption, addSuffixOption],
+  action,
 };
