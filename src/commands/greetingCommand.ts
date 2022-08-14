@@ -1,7 +1,7 @@
 import type { ProgramCommand, CommandOption } from "../types";
 
 const greetingOption: CommandOption = {
-  flag: "--greeting <greetingMessage>",
+  flag: "--message <greetingMessage>",
   description: "add custom greeting message",
   defaultValue: "Hi",
 };
@@ -23,16 +23,16 @@ const commandAction = (optionStrings: { [k: string]: string }) => {
   if (optionStrings["do"]) doFunction = doFunctions[optionStrings["do"]];
 
   try {
-    doFunction(optionStrings.greeting);
+    doFunction(optionStrings.message);
   } catch (error) {
     console.log(`--do "${optionStrings["do"]}" is invalid`);
     process.exit(1);
   }
 };
 
-export const runCommand: ProgramCommand = {
-  commandName: "run",
-  description: 'run "run" command(FOR TEST)',
+export const greetingCommand: ProgramCommand = {
+  commandName: "greeting",
+  description: 'print greeting message(for test)',
   options: [greetingOption, doFunctionOption],
   action: commandAction,
 };

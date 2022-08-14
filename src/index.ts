@@ -1,9 +1,9 @@
 import { program } from "commander";
 import { addCommand, getProgram } from "./program";
 import { programInfo } from "./programInfo";
-import { runCommand } from "./commands/runCommend";
+import { greetingCommand } from "./commands/greetingCommand";
 
 const programInstance = getProgram(program, programInfo);
-addCommand(programInstance, runCommand);
+addCommand(programInstance, greetingCommand);
 
 programInstance.parse();

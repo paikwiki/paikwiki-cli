@@ -11,10 +11,12 @@ export const addCommand = (
   programInstance: Command,
   { commandName, description, options, action }: ProgramCommand
 ) => {
-  programInstance.command(commandName).description(description).action(action);
-  options.forEach((opt) =>
-    programInstance.option(...commandOptionConverter(opt))
-  );
+  const pi = programInstance.command(commandName);
+  pi.description(description);
+  options.forEach((opt) => {
+    pi.option(...commandOptionConverter(opt));
+  });
+  pi.action(action);
 
-  return programInstance;
+  return pi;
 };
