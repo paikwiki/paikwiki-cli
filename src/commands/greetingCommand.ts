@@ -1,4 +1,7 @@
-import { nameObjectConverter, optionObjectConverter } from "./utils";
+import {
+  optionNameToObjectConverter,
+  optionNameToFlagConverter,
+} from "./utils";
 import type { CommandProps, ProgramCommand } from "../types";
 
 type CommandOptionName = "message" | "addSuffix";
@@ -17,13 +20,12 @@ const ADD_SUFFIX_FUNCTION_NAMES: Readonly<AddSuffixFunctionName[]> = [
   "tilde",
 ] as const;
 
-// TODO: commandOptions 보다 명시적인 이름으로 변경
-const commandOptions: Readonly<Record<CommandOptionName, CommandOption>> =
-  optionObjectConverter(COMMAND_PROPS.options);
+const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
+  optionNameToFlagConverter(COMMAND_PROPS.options);
 
 const addSuffixFunctionNames: Readonly<
   Record<AddSuffixFunctionName, AddSuffixFunctionName>
-> = nameObjectConverter(ADD_SUFFIX_FUNCTION_NAMES);
+> = optionNameToObjectConverter(ADD_SUFFIX_FUNCTION_NAMES);
 
 const getAddSuffixDescription = (functionNames: string[]) =>
   `available functions: ${functionNames.map((name) => `"${name}"`).join(", ")}`;
@@ -35,7 +37,7 @@ const action = (optionStrings: { [k: string]: string }) => {
   };
   const commandOptionNames: Readonly<
     Record<CommandOptionName, CommandOptionName>
-  > = nameObjectConverter(COMMAND_PROPS.options);
+  > = optionNameToObjectConverter(COMMAND_PROPS.options);
   const addSuffixes: Readonly<{
     [functionName in AddSuffixFunctionName]: AddSuffix;
   }> = {
@@ -57,7 +59,7 @@ const action = (optionStrings: { [k: string]: string }) => {
     console.log(addSuffix(optionStrings.message as AddSuffixFunctionName)); // TODO: as 제거
   } catch (error) {
     console.log(
-      `${commandOptions.addSuffix} "${
+      `${optionFlags.addSuffix} "${
         optionStrings[commandOptionNames.addSuffix]
       }" is invalid`
     );
@@ -70,12 +72,12 @@ export const greetingCommand: ProgramCommand = {
   description: "print greeting message(for test)",
   options: [
     {
-      flag: `${commandOptions.message} <greetingMessage>`,
+      flag: `${optionFlags.message} <greetingMessage>`,
       description: "add custom greeting message",
       defaultValue: "Hi",
     },
     {
-      flag: `${commandOptions.addSuffix} <addSuffixFunctionName>`,
+      flag: `${optionFlags.addSuffix} <addSuffixFunctionName>`,
       description: getAddSuffixDescription(Object.keys(addSuffixFunctionNames)),
       defaultValue: addSuffixFunctionNames.default,
     },

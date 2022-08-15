@@ -1,5 +1,5 @@
 import fs from "fs";
-import { optionObjectConverter } from "./utils";
+import { optionNameToFlagConverter } from "./utils";
 import type { CommandProps, ProgramCommand } from "../types";
 
 type CommandOptionName = "filePath";
@@ -10,16 +10,15 @@ const COMMAND_PROPS: CommandProps<CommandOptionName> = {
   options: ["filePath"] as const,
 } as const;
 
-// TODO: commandOptions 보다 명시적인 이름으로 변경
-const commandOptions: Readonly<Record<CommandOptionName, CommandOption>> =
-  optionObjectConverter(COMMAND_PROPS.options);
+const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
+  optionNameToFlagConverter(COMMAND_PROPS.options);
 
 export const catCommand: ProgramCommand = {
   commandName: COMMAND_PROPS.name,
   description: "cat file",
   options: [
     {
-      flag: `${commandOptions.filePath} <filePath>`,
+      flag: `${optionFlags.filePath} <filePath>`,
       description: "file path",
     },
   ],

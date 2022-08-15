@@ -14,10 +14,10 @@ const stringToObjectConverter = <T extends string, U extends string>(
   return nameObject as Readonly<Record<T, U>>; // TODO: as 제거
 };
 
-export const nameObjectConverter = <T extends string, U extends string>(
+export const optionNameToObjectConverter = <T extends string, U extends string>(
   names: Readonly<T[]>
 ): Readonly<Record<T, U>> => stringToObjectConverter(names);
 
-export const optionObjectConverter = <T extends string, U extends string>(
+export const optionNameToFlagConverter = <T extends string, U extends string>(
   names: Readonly<T[]>
 ): Readonly<Record<T, U>> => stringToObjectConverter(names, OPTION_PREFIX);
