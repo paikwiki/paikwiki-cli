@@ -1,3 +1,5 @@
+import { nameObjectConverter } from "./utils";
+import { OPTION_PREFIX } from "./constants";
 import type { ProgramCommand } from "../types";
 
 type GreetingCommandOption = "--message" | "--addSuffix";
@@ -5,7 +7,6 @@ type GreetingCommandOptionName = "message" | "addSuffix";
 type AddSuffixFunctionName = "default" | "questionMark" | "tilde";
 type AddSuffix = (param: AddSuffixFunctionName) => string;
 
-const OPTION_PREFIX = "--";
 const GREETING_COMMAND_NAME = "greeting";
 const GREETING_COMMAND_OPTION_NAMES: Readonly<GreetingCommandOptionName[]> = [
   "message",
@@ -17,20 +18,7 @@ const ADD_SUFFIX_FUNCTION_NAMES: Readonly<AddSuffixFunctionName[]> = [
   "tilde",
 ] as const;
 
-const nameObjectConverter = <T extends string, U extends string>(
-  names: Readonly<T[]>,
-  withPrefixForValue?: string
-): Readonly<Record<T, U>> => {
-  const nameObject: Partial<Record<T, U>> = {};
-  names.forEach((name) => {
-    nameObject[name] = (
-      withPrefixForValue ? `${withPrefixForValue}${name}` : name
-    ) as U;
-  });
-
-  return nameObject as Readonly<Record<T, U>>; // TODO: as 제거
-};
-
+// TODO: ~CommandOptions 보다 명시적인 이름으로 변경
 const greetingCommandOptions: Readonly<
   Record<GreetingCommandOptionName, GreetingCommandOption>
 > = nameObjectConverter(GREETING_COMMAND_OPTION_NAMES, OPTION_PREFIX);
