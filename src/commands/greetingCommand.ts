@@ -95,4 +95,4 @@ export const greetingCommand: ProgramCommand = {
     },
   ],
   action,
-};
+} as const;

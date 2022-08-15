@@ -10,9 +10,9 @@ export interface ProgramInfo {
   version: string;
 }
 
-export interface ProgramCommand {
+export type ProgramCommand = Readonly<{
   commandName: string;
   description: string;
-  options: CommandOption[];
+  options: Readonly<CommandOption[]>;
   action: (param: { [key: string]: string }) => void;
-}
+}>;
