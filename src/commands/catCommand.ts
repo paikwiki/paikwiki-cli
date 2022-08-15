@@ -1,24 +1,26 @@
 import fs from "fs";
 import { nameObjectConverter } from "./utils";
 import { OPTION_PREFIX } from "./constants";
-import type { ProgramCommand } from "../types";
+import type { CommandProps, ProgramCommand } from "../types";
 
-type CatCommandOptionName = "filePath";
-type CatCommandOption = "--filePath";
+type CommandOptionName = "filePath";
+type CommandOption = "--filePath";
 
-const CAT_COMMAND_OPTION_NAMES = ["filePath"];
+const COMMAND_PROPS: CommandProps<CommandOptionName> = {
+  name: "cat",
+  options: ["filePath"] as const,
+} as const;
 
-// TODO: ~CommandOptions 보다 명시적인 이름으로 변경
-const catCommandOptions: Readonly<
-  Record<CatCommandOptionName, CatCommandOption>
-> = nameObjectConverter(CAT_COMMAND_OPTION_NAMES, OPTION_PREFIX);
+// TODO: commandOptions 보다 명시적인 이름으로 변경
+const commandOptions: Readonly<Record<CommandOptionName, CommandOption>> =
+  nameObjectConverter(COMMAND_PROPS.options, OPTION_PREFIX);
 
 export const catCommand: ProgramCommand = {
-  commandName: "cat",
+  commandName: COMMAND_PROPS.name,
   description: "cat file",
   options: [
     {
-      flag: `${catCommandOptions.filePath} <filePath>`,
+      flag: `${commandOptions.filePath} <filePath>`,
       description: "file path",
     },
   ],

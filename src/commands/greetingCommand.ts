@@ -1,17 +1,17 @@
 import { nameObjectConverter } from "./utils";
 import { OPTION_PREFIX } from "./constants";
-import type { ProgramCommand } from "../types";
+import type { CommandProps, ProgramCommand } from "../types";
 
-type GreetingCommandOption = "--message" | "--addSuffix";
-type GreetingCommandOptionName = "message" | "addSuffix";
+type CommandOptionName = "message" | "addSuffix";
+type CommandOption = "--message" | "--addSuffix";
 type AddSuffixFunctionName = "default" | "questionMark" | "tilde";
 type AddSuffix = (param: AddSuffixFunctionName) => string;
 
-const GREETING_COMMAND_NAME = "greeting";
-const GREETING_COMMAND_OPTION_NAMES: Readonly<GreetingCommandOptionName[]> = [
-  "message",
-  "addSuffix",
-] as const;
+const COMMAND_PROPS: CommandProps<CommandOptionName> = {
+  name: "greeting",
+  options: ["message", "addSuffix"] as const,
+} as const;
+
 const ADD_SUFFIX_FUNCTION_NAMES: Readonly<AddSuffixFunctionName[]> = [
   "default",
   "questionMark",
@@ -19,9 +19,8 @@ const ADD_SUFFIX_FUNCTION_NAMES: Readonly<AddSuffixFunctionName[]> = [
 ] as const;
 
 // TODO: ~CommandOptions 보다 명시적인 이름으로 변경
-const greetingCommandOptions: Readonly<
-  Record<GreetingCommandOptionName, GreetingCommandOption>
-> = nameObjectConverter(GREETING_COMMAND_OPTION_NAMES, OPTION_PREFIX);
+const CommandOptions: Readonly<Record<CommandOptionName, CommandOption>> =
+  nameObjectConverter(COMMAND_PROPS.options, OPTION_PREFIX);
 
 const addSuffixFunctionNames: Readonly<
   Record<AddSuffixFunctionName, AddSuffixFunctionName>
@@ -35,9 +34,9 @@ const action = (optionStrings: { [k: string]: string }) => {
     questionMark: "!",
     tilde: "~",
   };
-  const greetingCommandOptionNames: Readonly<
-    Record<GreetingCommandOptionName, GreetingCommandOptionName>
-  > = nameObjectConverter(GREETING_COMMAND_OPTION_NAMES);
+  const CommandOptionNames: Readonly<
+    Record<CommandOptionName, CommandOptionName>
+  > = nameObjectConverter(COMMAND_PROPS.options);
   const addSuffixes: Readonly<{
     [functionName in AddSuffixFunctionName]: AddSuffix;
   }> = {
@@ -51,7 +50,7 @@ const action = (optionStrings: { [k: string]: string }) => {
     suffix ? `${greeting}${suffix}` : greeting;
   const addSuffix =
     addSuffixes[
-      (optionStrings[greetingCommandOptionNames.addSuffix] ??
+      (optionStrings[CommandOptionNames.addSuffix] ??
         addSuffixFunctionNames.default) as AddSuffixFunctionName // TODO: as 제거
     ];
 
@@ -59,8 +58,8 @@ const action = (optionStrings: { [k: string]: string }) => {
     console.log(addSuffix(optionStrings.message as AddSuffixFunctionName)); // TODO: as 제거
   } catch (error) {
     console.log(
-      `${greetingCommandOptions.addSuffix} "${
-        optionStrings[greetingCommandOptionNames.addSuffix]
+      `${CommandOptions.addSuffix} "${
+        optionStrings[CommandOptionNames.addSuffix]
       }" is invalid`
     );
     process.exit(1);
@@ -68,16 +67,16 @@ const action = (optionStrings: { [k: string]: string }) => {
 };
 
 export const greetingCommand: ProgramCommand = {
-  commandName: GREETING_COMMAND_NAME,
+  commandName: COMMAND_PROPS.name,
   description: "print greeting message(for test)",
   options: [
     {
-      flag: `${greetingCommandOptions.message} <greetingMessage>`,
+      flag: `${CommandOptions.message} <greetingMessage>`,
       description: "add custom greeting message",
       defaultValue: "Hi",
     },
     {
-      flag: `${greetingCommandOptions.addSuffix} <addSuffixFunctionName>`,
+      flag: `${CommandOptions.addSuffix} <addSuffixFunctionName>`,
       description: getAddSuffixDescription(Object.keys(addSuffixFunctionNames)),
       defaultValue: addSuffixFunctionNames.default,
     },
