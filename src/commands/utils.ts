@@ -1,4 +1,6 @@
-export const nameObjectConverter = <T extends string, U extends string>(
+import { OPTION_PREFIX } from "./constants";
+
+const stringToObjectConverter = <T extends string, U extends string>(
   names: Readonly<T[]>,
   withPrefixForValue?: string
 ): Readonly<Record<T, U>> => {
@@ -11,3 +13,11 @@ export const nameObjectConverter = <T extends string, U extends string>(
 
   return nameObject as Readonly<Record<T, U>>; // TODO: as 제거
 };
+
+export const nameObjectConverter = <T extends string, U extends string>(
+  names: Readonly<T[]>
+): Readonly<Record<T, U>> => stringToObjectConverter(names);
+
+export const optionObjectConverter = <T extends string, U extends string>(
+  names: Readonly<T[]>
+): Readonly<Record<T, U>> => stringToObjectConverter(names, OPTION_PREFIX);

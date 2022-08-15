@@ -1,6 +1,5 @@
 import fs from "fs";
-import { nameObjectConverter } from "./utils";
-import { OPTION_PREFIX } from "./constants";
+import { optionObjectConverter } from "./utils";
 import type { CommandProps, ProgramCommand } from "../types";
 
 type CommandOptionName = "filePath";
@@ -13,7 +12,7 @@ const COMMAND_PROPS: CommandProps<CommandOptionName> = {
 
 // TODO: commandOptions 보다 명시적인 이름으로 변경
 const commandOptions: Readonly<Record<CommandOptionName, CommandOption>> =
-  nameObjectConverter(COMMAND_PROPS.options, OPTION_PREFIX);
+  optionObjectConverter(COMMAND_PROPS.options);
 
 export const catCommand: ProgramCommand = {
   commandName: COMMAND_PROPS.name,
