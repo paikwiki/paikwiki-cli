@@ -1,3 +1,4 @@
+import fs from "fs";
 import { nameObjectConverter } from "./utils";
 import { OPTION_PREFIX } from "./constants";
 import type { ProgramCommand } from "../types";
@@ -21,7 +22,11 @@ export const catCommand: ProgramCommand = {
       description: "file path",
     },
   ],
-  // TODO: action 함수 작성
-  action: (optionStrings) =>
-    console.log(`cat ${optionStrings.filePath}`),
+  action: (optionStrings) => {
+    if (!fs.existsSync(optionStrings.filePath))
+      throw new Error(`file does not exist: ${optionStrings.filePath}`);
+
+    const file = fs.readFileSync(optionStrings.filePath);
+    console.log(file.toString());
+  },
 } as const;
