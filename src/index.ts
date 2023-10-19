@@ -1,12 +1,14 @@
-import { program } from "commander";
-import { addCommands, getProgram } from "./program";
-import { programInfo } from "./programInfo";
+import App from "./app";
 import { greetingCommand } from "./commands/greetingCommand";
 import { catCommand } from "./commands/catCommand";
 
-const programInstance = getProgram(program, programInfo);
-const commands = [greetingCommand, catCommand];
+const app = new App(
+  {
+    name: "Paikwiki CLI",
+    description: "CLI Tool created by paikwiki",
+    version: "1.0.0",
+  },
+  [greetingCommand, catCommand]
+);
 
-addCommands(programInstance, commands);
-
-programInstance.parse();
+app.start();

@@ -2,7 +2,8 @@ import {
   optionNameToObjectConverter,
   optionNameToFlagConverter,
 } from "./utils";
-import type { CommandProps, ProgramCommand } from "../types";
+import type { CommandProps } from "../types";
+import type { ProgramCommand } from "../app";
 
 type CommandOptionName = "message" | "addSuffix";
 type CommandOption = "--message" | "--addSuffix";
