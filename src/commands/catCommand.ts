@@ -1,7 +1,7 @@
 import fs from "fs";
 import { optionNameToFlagConverter } from "./utils";
+import { Command } from "./command";
 import type { CommandProps } from "../types";
-import { ProgramCommand } from "../app";
 
 type CommandOptionName = "filePath";
 type CommandOption = "--filePath";
@@ -14,7 +14,7 @@ const COMMAND_PROPS: CommandProps<CommandOptionName> = {
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
   optionNameToFlagConverter(COMMAND_PROPS.options);
 
-export const catCommand: ProgramCommand = {
+export const catCommand = new Command({
   commandName: COMMAND_PROPS.name,
   description: "cat file",
   options: [
@@ -30,4 +30,4 @@ export const catCommand: ProgramCommand = {
     const file = fs.readFileSync(optionStrings.filePath);
     console.log(file.toString());
   },
-} as const;
+});

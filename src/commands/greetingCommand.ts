@@ -1,9 +1,9 @@
+import { Command } from "./command";
 import {
   optionNameToObjectConverter,
   optionNameToFlagConverter,
 } from "./utils";
 import type { CommandProps } from "../types";
-import type { ProgramCommand } from "../app";
 
 type CommandOptionName = "message" | "addSuffix";
 type CommandOption = "--message" | "--addSuffix";
@@ -31,44 +31,7 @@ const addSuffixFunctionNames: Readonly<
 const getAddSuffixDescription = (functionNames: string[]) =>
   `available functions: ${functionNames.map((name) => `"${name}"`).join(", ")}`;
 
-const action = (optionStrings: { [k: string]: string }) => {
-  const suffixes = {
-    questionMark: "!",
-    tilde: "~",
-  };
-  const commandOptionNames: Readonly<
-    Record<CommandOptionName, CommandOptionName>
-  > = optionNameToObjectConverter(COMMAND_PROPS.options);
-  const addSuffixes: Readonly<{
-    [functionName in AddSuffixFunctionName]: AddSuffix;
-  }> = {
-    default: (greeting) => greetWithSuffix(greeting)(),
-    questionMark: (greeting) =>
-      greetWithSuffix(greeting)(suffixes.questionMark),
-    tilde: (greeting) => greetWithSuffix(greeting)(suffixes.tilde),
-  };
-
-  const greetWithSuffix = (greeting: string) => (suffix?: string) =>
-    suffix ? `${greeting}${suffix}` : greeting;
-  const addSuffix =
-    addSuffixes[
-      (optionStrings[commandOptionNames.addSuffix] ??
-        addSuffixFunctionNames.default) as AddSuffixFunctionName // TODO: as 제거
-    ];
-
-  try {
-    console.log(addSuffix(optionStrings.message as AddSuffixFunctionName)); // TODO: as 제거
-  } catch (error) {
-    console.log(
-      `${optionFlags.addSuffix} "${
-        optionStrings[commandOptionNames.addSuffix]
-      }" is invalid`
-    );
-    process.exit(1);
-  }
-};
-
-export const greetingCommand: ProgramCommand = {
+export const greetingCommand = new Command({
   commandName: COMMAND_PROPS.name,
   description: "print greeting message(for test)",
   options: [
@@ -83,5 +46,40 @@ export const greetingCommand: ProgramCommand = {
       defaultValue: addSuffixFunctionNames.default,
     },
   ],
-  action,
-} as const;
+  action: (optionStrings: { [k: string]: string }) => {
+    const suffixes = {
+      questionMark: "!",
+      tilde: "~",
+    };
+    const commandOptionNames: Readonly<
+      Record<CommandOptionName, CommandOptionName>
+    > = optionNameToObjectConverter(COMMAND_PROPS.options);
+    const addSuffixes: Readonly<{
+      [functionName in AddSuffixFunctionName]: AddSuffix;
+    }> = {
+      default: (greeting) => greetWithSuffix(greeting)(),
+      questionMark: (greeting) =>
+        greetWithSuffix(greeting)(suffixes.questionMark),
+      tilde: (greeting) => greetWithSuffix(greeting)(suffixes.tilde),
+    };
+
+    const greetWithSuffix = (greeting: string) => (suffix?: string) =>
+      suffix ? `${greeting}${suffix}` : greeting;
+    const addSuffix =
+      addSuffixes[
+        (optionStrings[commandOptionNames.addSuffix] ??
+          addSuffixFunctionNames.default) as AddSuffixFunctionName // TODO: as 제거
+      ];
+
+    try {
+      console.log(addSuffix(optionStrings.message as AddSuffixFunctionName)); // TODO: as 제거
+    } catch (error) {
+      console.log(
+        `${optionFlags.addSuffix} "${
+          optionStrings[commandOptionNames.addSuffix]
+        }" is invalid`
+      );
+      process.exit(1);
+    }
+  }
+})

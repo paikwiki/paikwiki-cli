@@ -1,20 +1,8 @@
-import { Command, program } from "commander";
-
-export type ProgramCommand = Readonly<{
-  commandName: string;
-  description: string;
-  options: Readonly<
-    {
-      flag: string;
-      description?: string;
-      defaultValue?: string;
-    }[]
-  >;
-  action: (param: { [key: string]: string }) => void;
-}>;
+import { Command as Program, program } from "commander";
+import { Command } from "./commands/command";
 
 class App {
-  private program: Command;
+  private program: Program;
 
   constructor(
     {
@@ -26,7 +14,7 @@ class App {
       description: string;
       version: string;
     },
-    commands: ProgramCommand[]
+    commands: Command[]
   ) {
     this.program = program.name(name).description(description).version(version);
     this.initCommands(commands);
@@ -36,7 +24,7 @@ class App {
     this.program.parse();
   }
 
-  private initCommands(commands: ProgramCommand[]) {
+  private initCommands(commands: Command[]) {
     commands.forEach(({ commandName, description, options, action }) => {
       const pi = this.program.command(commandName);
       pi.description(description);
