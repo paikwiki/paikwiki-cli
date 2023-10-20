@@ -4,18 +4,6 @@ interface CommandOption {
   defaultValue?: string;
 }
 
-interface CommandParams {
-  commandName: string;
-  description: string;
-  options: CommandOption[];
-  action: (param: { [key: string]: string }) => void;
-}
-
-export interface CommandProps<T> {
-  name: string;
-  options: Readonly<T[]>;
-}
-
 export class Command {
   commandName: string;
   description: string;
@@ -28,7 +16,12 @@ export class Command {
       description,
       options,
       action,
-    }: CommandParams
+    }: {
+      commandName: string;
+      description: string;
+      options: CommandOption[];
+      action: (param: { [key: string]: string }) => void;
+    }
   ) {
     this.commandName = commandName;
     this.description = description;

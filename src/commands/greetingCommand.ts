@@ -1,24 +1,24 @@
-import { Command, CommandProps } from "./command";
+import { Command } from "./command";
 import {
   optionNameToObjectConverter,
   optionNameToFlagConverter,
 } from "./utils";
 
-type CommandOptionName = "message" | "addSuffix";
-type CommandOption = "--message" | "--addSuffix";
-type AddSuffixFunctionName = "default" | "questionMark" | "tilde";
-type AddSuffix = (param: AddSuffixFunctionName) => string;
-
-const COMMAND_PROPS: CommandProps<CommandOptionName> = {
+const COMMAND_PROPS_OPTIONS = ["message", "addSuffix"] as const;
+const COMMAND_PROPS = {
   name: "greeting",
-  options: ["message", "addSuffix"] as const,
+  options: COMMAND_PROPS_OPTIONS,
 } as const;
-
-const ADD_SUFFIX_FUNCTION_NAMES: Readonly<AddSuffixFunctionName[]> = [
+const ADD_SUFFIX_FUNCTION_NAMES= [
   "default",
   "questionMark",
   "tilde",
 ] as const;
+
+type CommandOption = "--message" | "--addSuffix";
+type CommandOptionName = typeof COMMAND_PROPS_OPTIONS[number];
+type AddSuffixFunctionName = typeof ADD_SUFFIX_FUNCTION_NAMES[number];
+type AddSuffix = (param: AddSuffixFunctionName) => string;
 
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
   optionNameToFlagConverter(COMMAND_PROPS.options);

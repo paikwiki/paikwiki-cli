@@ -1,14 +1,15 @@
 import fs from "fs";
 import { optionNameToFlagConverter } from "./utils";
-import { Command, CommandProps } from "./command";
+import { Command } from "./command";
 
-type CommandOptionName = "filePath";
-type CommandOption = "--filePath";
-
-const COMMAND_PROPS: CommandProps<CommandOptionName> = {
+const COMMAND_PROPS_OPTIONS = ["filePath"] as const;
+const COMMAND_PROPS= {
   name: "cat",
-  options: ["filePath"] as const,
+  options: COMMAND_PROPS_OPTIONS,
 } as const;
+
+type CommandOption = "--filePath";
+type CommandOptionName = typeof COMMAND_PROPS_OPTIONS[number]
 
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
   optionNameToFlagConverter(COMMAND_PROPS.options);
