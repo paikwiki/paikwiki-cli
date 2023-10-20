@@ -11,6 +11,11 @@ interface CommandParams {
   action: (param: { [key: string]: string }) => void;
 }
 
+export interface CommandProps<T> {
+  name: string;
+  options: Readonly<T[]>;
+}
+
 export class Command {
   commandName: string;
   description: string;

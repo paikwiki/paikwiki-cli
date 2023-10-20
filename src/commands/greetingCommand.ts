@@ -1,9 +1,8 @@
-import { Command } from "./command";
+import { Command, CommandProps } from "./command";
 import {
   optionNameToObjectConverter,
   optionNameToFlagConverter,
 } from "./utils";
-import type { CommandProps } from "../types";
 
 type CommandOptionName = "message" | "addSuffix";
 type CommandOption = "--message" | "--addSuffix";

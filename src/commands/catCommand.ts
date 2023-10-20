@@ -1,7 +1,6 @@
 import fs from "fs";
 import { optionNameToFlagConverter } from "./utils";
-import { Command } from "./command";
-import type { CommandProps } from "../types";
+import { Command, CommandProps } from "./command";
 
 type CommandOptionName = "filePath";
 type CommandOption = "--filePath";

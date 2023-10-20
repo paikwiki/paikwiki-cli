@@ -1,4 +1,4 @@
-import { OPTION_PREFIX } from "./constants";
+const OPTION_PREFIX = "--";
 
 const stringToObjectConverter = <T extends string, U extends string>(
   names: Readonly<T[]>,
