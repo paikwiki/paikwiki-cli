@@ -3,13 +3,13 @@ import { optionNameToFlagConverter } from "./utils";
 import { Command } from "./command";
 
 const COMMAND_PROPS_OPTIONS = ["filePath"] as const;
-const COMMAND_PROPS= {
+const COMMAND_PROPS = {
   name: "cat",
   options: COMMAND_PROPS_OPTIONS,
 } as const;
 
 type CommandOption = "--filePath";
-type CommandOptionName = typeof COMMAND_PROPS_OPTIONS[number]
+type CommandOptionName = (typeof COMMAND_PROPS_OPTIONS)[number];
 
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
   optionNameToFlagConverter(COMMAND_PROPS.options);

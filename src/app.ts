@@ -1,5 +1,6 @@
-import { Command as Program, program } from "commander";
-import { Command } from "./commands/command";
+import { program } from "commander";
+import type { Command as Program } from "commander";
+import type { Command } from "./commands/command";
 
 class App {
   private program: Program;
@@ -14,7 +15,7 @@ class App {
       description: string;
       version: string;
     },
-    commands: Command[]
+    commands: Command[],
   ) {
     this.program = program.name(name).description(description).version(version);
     this.initCommands(commands);

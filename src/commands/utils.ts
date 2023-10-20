@@ -2,7 +2,7 @@ const OPTION_PREFIX = "--";
 
 const stringToObjectConverter = <T extends string, U extends string>(
   names: Readonly<T[]>,
-  withPrefixForValue?: string
+  withPrefixForValue?: string,
 ): Readonly<Record<T, U>> => {
   const nameObject: Partial<Record<T, U>> = {};
   names.forEach((name) => {
@@ -15,9 +15,9 @@ const stringToObjectConverter = <T extends string, U extends string>(
 };
 
 export const optionNameToObjectConverter = <T extends string, U extends string>(
-  names: Readonly<T[]>
+  names: Readonly<T[]>,
 ): Readonly<Record<T, U>> => stringToObjectConverter(names);
 
 export const optionNameToFlagConverter = <T extends string, U extends string>(
-  names: Readonly<T[]>
+  names: Readonly<T[]>,
 ): Readonly<Record<T, U>> => stringToObjectConverter(names, OPTION_PREFIX);

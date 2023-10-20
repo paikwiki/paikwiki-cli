@@ -8,7 +8,7 @@ const app = new App(
     description: "CLI Tool created by paikwiki",
     version: "1.0.0",
   },
-  [greetingCommand, catCommand]
+  [greetingCommand, catCommand],
 );
 
 app.start();

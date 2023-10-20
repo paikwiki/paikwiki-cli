@@ -10,19 +10,17 @@ export class Command {
   options: CommandOption[];
   action: (param: { [key: string]: string }) => void;
 
-  constructor(
-    {
-      commandName,
-      description,
-      options,
-      action,
-    }: {
-      commandName: string;
-      description: string;
-      options: CommandOption[];
-      action: (param: { [key: string]: string }) => void;
-    }
-  ) {
+  constructor({
+    commandName,
+    description,
+    options,
+    action,
+  }: {
+    commandName: string;
+    description: string;
+    options: CommandOption[];
+    action: (param: { [key: string]: string }) => void;
+  }) {
     this.commandName = commandName;
     this.description = description;
     this.options = options;

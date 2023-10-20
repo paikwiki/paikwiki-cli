@@ -9,15 +9,11 @@ const COMMAND_PROPS = {
   name: "greeting",
   options: COMMAND_PROPS_OPTIONS,
 } as const;
-const ADD_SUFFIX_FUNCTION_NAMES= [
-  "default",
-  "questionMark",
-  "tilde",
-] as const;
+const ADD_SUFFIX_FUNCTION_NAMES = ["default", "questionMark", "tilde"] as const;
 
 type CommandOption = "--message" | "--addSuffix";
-type CommandOptionName = typeof COMMAND_PROPS_OPTIONS[number];
-type AddSuffixFunctionName = typeof ADD_SUFFIX_FUNCTION_NAMES[number];
+type CommandOptionName = (typeof COMMAND_PROPS_OPTIONS)[number];
+type AddSuffixFunctionName = (typeof ADD_SUFFIX_FUNCTION_NAMES)[number];
 type AddSuffix = (param: AddSuffixFunctionName) => string;
 
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
@@ -76,9 +72,9 @@ export const greetingCommand = new Command({
       console.log(
         `${optionFlags.addSuffix} "${
           optionStrings[commandOptionNames.addSuffix]
-        }" is invalid`
+        }" is invalid`,
       );
       process.exit(1);
     }
-  }
-})
+  },
+});
