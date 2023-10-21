@@ -1,11 +1,10 @@
 {
   "name": "paikwiki-cli",
   "version": "1.0.4",
-  "main": "./dist/index.js",
   "author": "paikwiki@gmail.com",
   "license": "MIT",
   "bin": {
-    "paik": "./dist/index.js"
+    "paik": "dist/index.js"
   },
   "scripts": {
     "build": "tsc --build tsconfig.json",
