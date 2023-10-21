@@ -4,6 +4,9 @@
   "main": "./dist/index.js",
   "author": "paikwiki@gmail.com",
   "license": "MIT",
+  "bin": {
+    "paik": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "exec": "yarn build && node ./dist/index.js",
