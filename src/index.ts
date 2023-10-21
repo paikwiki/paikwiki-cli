@@ -6,7 +6,7 @@ const app = new App(
   {
     name: "Paikwiki CLI",
     description: "CLI Tool created by paikwiki",
-    version: "1.0.0",
+    version: "1.0.3",
   },
   [greetingCommand, catCommand],
 );
