@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import App from "./app";
 import { greetingCommand } from "./commands/greetingCommand";
 import { catCommand } from "./commands/catCommand";
