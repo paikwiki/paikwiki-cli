@@ -5,19 +5,14 @@ import {
 } from "./utils";
 
 const COMMAND_PROPS_OPTIONS = ["message", "addSuffix"] as const;
-const COMMAND_PROPS = {
-  name: "greeting",
-  options: COMMAND_PROPS_OPTIONS,
-} as const;
 const ADD_SUFFIX_FUNCTION_NAMES = ["default", "questionMark", "tilde"] as const;
 
 type CommandOption = "--message" | "--addSuffix";
 type CommandOptionName = (typeof COMMAND_PROPS_OPTIONS)[number];
 type AddSuffixFunctionName = (typeof ADD_SUFFIX_FUNCTION_NAMES)[number];
-type AddSuffix = (param: AddSuffixFunctionName) => string;
 
 const optionFlags: Readonly<Record<CommandOptionName, CommandOption>> =
-  optionNameToFlagConverter(COMMAND_PROPS.options);
+  optionNameToFlagConverter(COMMAND_PROPS_OPTIONS);
 
 const addSuffixFunctionNames: Readonly<
   Record<AddSuffixFunctionName, AddSuffixFunctionName>
@@ -27,7 +22,7 @@ const getAddSuffixDescription = (functionNames: string[]) =>
   `available functions: ${functionNames.map((name) => `"${name}"`).join(", ")}`;
 
 export const greetingCommand = new Command({
-  commandName: COMMAND_PROPS.name,
+  commandName: "greeting",
   description: "print greeting message(for test)",
   options: [
     {
@@ -48,9 +43,11 @@ export const greetingCommand = new Command({
     };
     const commandOptionNames: Readonly<
       Record<CommandOptionName, CommandOptionName>
-    > = optionNameToObjectConverter(COMMAND_PROPS.options);
+    > = optionNameToObjectConverter(COMMAND_PROPS_OPTIONS);
     const addSuffixes: Readonly<{
-      [functionName in AddSuffixFunctionName]: AddSuffix;
+      [functionName in AddSuffixFunctionName]: (
+        param: AddSuffixFunctionName,
+      ) => string;
     }> = {
       default: (greeting) => greetWithSuffix(greeting)(),
       questionMark: (greeting) =>
